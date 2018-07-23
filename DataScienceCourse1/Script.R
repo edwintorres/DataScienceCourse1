@@ -1,4 +1,9 @@
-﻿# We can use the print() function
+﻿########################################################
+# Script file to test assignments and material from
+#   HarvardX: PH125.1x Data Science: R Basics
+########################################################
+
+# We can use the print() function
 print("Hello World!")
 # Quotes can be suppressed in the output
 print("Hello World!", quote = FALSE)
