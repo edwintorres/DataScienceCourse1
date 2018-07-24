@@ -1,6 +1,7 @@
 ﻿########################################################
 # Script file to test assignments and material from
 #   HarvardX: PH125.1x Data Science: R Basics
+#   This is my personal test
 ########################################################
 
 # We can use the print() function
@@ -12,7 +13,6 @@ print(paste("How", "are", "you?"))
 
 #New Edit for test
 print("test test")
-
 
 #dslabs lib from Harvard Data Science course
 install.packages("dslabs")
@@ -43,19 +43,13 @@ log(exp(a))
 
 #show the arguments yhay it needs
 args(log)
-
 log(x = 8, base = 2)
 log(8, 2)
-
 ? "+"
-
 #data sets included with R for users to practice and test out functions.
 data()
 
-
-
 co2
-
 
 ##test for 
 
@@ -70,7 +64,6 @@ str(murders)
 murders$state
 murders$population
     
-
 pop <- murders$population
 pop
 length(pop)
@@ -397,3 +390,74 @@ murder_rate
 mean(murder_rate)
 
 #RxSqlServerData(co,table = "[Dimension].[City]")
+
+
+# Store the murder rate per 100,000 for each state, in `murder_rate`
+murder_rate <- murders$total / murders$population * 100000
+
+# Store the `murder_rate < 1` in `low` 
+low <- murder_rate < 1
+
+# Get the indices of entries that are below 1
+which(low)
+
+# Store the murder rate per 100,000 for each state, in murder_rate
+murder_rate <- murders$total / murders$population * 100000
+
+# Store the murder_rate < 1 in low 
+low <- murder_rate < 1
+
+# Names of states with murder rates lower than 1
+murders$state[which(low)]
+
+# Create a vector ind for states in the Northeast and with murder rates lower than 1. 
+ind <- murders$region=="Northeast" & low
+
+# Names of states in `ind` 
+murders$state[ind]
+
+# Store the murder rate per 100,000 for each state, in murder_rate
+murder_rate <- murders$total / murders$population * 100000
+
+# Compute average murder rate and store in avg using `mean` 
+mean <- mean(murder_rate)
+
+# How many states have murder rates below avg ? Check using sum 
+murders$state[which(murder_rate < mean)]
+sum(murder_rate < mean)
+
+
+# Store the 3 abbreviations in abbs in a vector (remember that they are character vectors and need quotes)
+abbs <- c("AK","MI","IA")
+# Match the abbs to the murders$abb and store in ind
+ind <- match(abbs, murders$abb)
+# Print state names from ind
+murders$state[ind]
+
+
+# Store the 5 abbreviations in `abbs`. (remember that they are character vectors)
+abbs <- c("MA", "ME", "MI", "MO", "MU")
+
+# Use the %in% command to check if the entries of abbs are abbreviations in the the murders data frame
+i <- abbs %in% murders$abb
+
+# abbs in murders$abb
+abbs[which(abbs %in% murders$abb)]
+# index of murders with abb in abbs
+match(abbs[which(abbs %in% murders$abb)], murders$abb)
+# Use which, %in% to find the states from abbs that exist on murders$abb
+# Favorite
+murders$state[match(abbs[which(abbs %in% murders$abb)], murders$abb)]
+
+sum(abbs %in% murders$abb)
+murders$state[abbs %in% murders$abb]
+
+
+# Store the 5 abbreviations in abbs. (remember that they are character vectors)
+abbs <- c("MA", "ME", "MI", "MO", "MU")
+
+# Use the `which` command and `!` operator to find out which abbreviation are not actually part of the dataset and store in ind
+ind <- which(!abbs %in% murders$abb)
+
+# What are the entries of abbs that are not actual abbreviations
+abbs[ind]
