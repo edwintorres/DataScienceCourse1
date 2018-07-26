@@ -461,3 +461,291 @@ ind <- which(!abbs %in% murders$abb)
 
 # What are the entries of abbs that are not actual abbreviations
 abbs[ind]
+
+
+######################################################
+# Excersice Section 3.2 Filter, Mutate, Pip
+
+library(dplyr)
+library(dslabs)
+data(murders)
+
+murders <- mutate(murders, population_in_millions = population / 10 ^ 6)
+head(murders)
+
+# Loading data
+library(dslabs)
+data(murders)
+
+# Loading dplyr
+library(dplyr)
+
+# Redefine murders so that it includes column named rate with the per 100,000 murder rates
+murders <- mutate(murders,rate = total/population*100000)
+
+head(murders)
+
+
+# Note that if you want ranks from highest to lowest you can take the negative and then compute the ranks 
+x <- c(88, 100, 83, 92, 94)
+rank(-x)
+
+# Defining rate
+rate <- murders$total / murders$population * 100000
+
+# Redefine murders to include a column named rank
+# with the ranks of rate from highest to lowest
+murders <- mutate(murders, rank=rank(-rate))
+
+murders
+
+
+select(murders, state, population)
+
+# Use select to only show state names and abbreviations from murders
+select(murders, state, abb)
+
+
+# Add the necessary columns
+murders <- mutate(murders, rate = total / population * 100000, rank = rank(-rate))
+
+# Filter to show the top 5 states with the highest murder rates
+filter(murders, rank <= 5)
+
+
+# Use filter to create a new data frame no_south
+no_south <- filter(murders, region != "South")
+# Use nrow() to calculate the number of rows
+nrow(no_south)
+
+
+
+# Create a new data frame called murders_nw with only the states from the northeast and the west
+murders_nw <- filter(murders, region %in% c("Northeast","West"))
+# Number of states (rows) in this category 
+nrow(murders_nw)
+
+
+# add the rate column
+murders <- mutate(murders, rate = total / population * 100000, rank = rank(-rate))
+
+# Create a table, call it my_states, that satisfies both the conditions 
+my_states <- filter(murders, region %in% c("Northeast", "West") & rate < 1)
+# Use select to show only the state name, the murder rate and the rank
+select(my_states, state, rate, rank)
+
+
+# Load library
+library(dplyr)
+
+## Define the rate column
+murders <- mutate(murders, rate = total / population * 100000, rank = rank(-rate))
+
+# show the result and only include the state, rate, and rank columns, all in one line
+filter(murders, region %in% c("Northeast", "West") & rate < 1) %>% select(state, rate, rank)
+
+
+
+
+
+# Loading the libraries
+library(dplyr)
+data(murders)
+# Create new data frame called my_states (with specifications in the instructions)
+my_states <- murders %>% mutate(rate = total / population * 100000, rank = rank(-rate)) %>% filter(region %in% c("Northeast", "West") & rate < 1) %>% select(state, rate, rank)
+
+my_states
+
+
+
+##############################################################
+# Section 3.3 Basic Visualization
+
+# Load the datasets and define some variables
+library(dslabs)
+data(murders)
+
+population_in_millions <- murders$population / 10 ^ 6
+total_gun_murders <- murders$total
+
+plot(population_in_millions, total_gun_murders)
+
+# Transform population using the log10 transformation and save to object log10_population
+log10_population <-  log10(murders$population)
+log10_population
+population_in_millions
+# Transform total gun murders using log10 transformation and save to object log10_total_gun_murders
+log10_total_gun_murders <- log10(murders$total)
+# Create a scatterplot with the log scale transformed population and murders 
+plot(log10_population, log10_total_gun_murders)
+
+test <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+test2 <- test
+log(test)
+plot(test,test2)
+plot(log10(test), log10(test))
+
+
+
+# Store the population in millions and save to population_in_millions 
+population_in_millions <- murders$population / 10 ^ 6
+
+
+# Create a histogram of this variable
+hist(population_in_millions)
+
+
+# Create a boxplot of state populations by region for the murders dataset
+boxplot(murders$population, murders$region)
+? boxplot
+boxplot(data.frame(murders$population, murders$region))
+
+data(eusilcP)
+strata <- stratify(eusilcP, c("region", "gender"))
+summary(strata)
+
+# Create a boxplot of state populations by region and specify dataset 
+boxplot(population ~ region, data = murders)
+boxplot()
+
+
+################################
+# Section 4
+
+x <- c(1, 2, -3, 4)
+if (all(x > 0)) {
+    print("All Positives")
+} else {
+    print("Not All Positives")
+}
+
+char_len <- nchar(murders$state)
+head(char_len)
+
+
+# Assign the state abbreviation when the state name is longer than 8 characters 
+new_name <- ifelse(nchar(murders$state) > 8, murders$abb, murders$state)
+
+new_name
+
+
+# Create function called `sum_n`
+sum_n <- function(n) {
+    my_v <- 1:n
+    sum(my_v)
+}
+# Use the function to determine the sum of integers from 1 to 5000
+sum_n(5000)
+
+
+
+# Create `altman_plot` 
+altman_plot <- function(x, y) {
+    plot(x+y,y-x)
+}
+
+
+altman_plot(100, 200)
+
+
+
+x <- 3
+my_func <- function(y) {
+    x <- 5
+    y + 5
+}
+x
+
+
+
+
+# Here is an example of function that adds numbers from 1 to n
+example_func <- function(n) {
+    x <- 1:n
+    sum(x)
+}
+
+# Here is the sum of the first 100 numbers
+example_func(100)
+
+# Write a function compute_s_n that with argument n and returns of 1 + 2^2 + ...+ n^2
+compute_s_n <- function(n) {
+    x <- 1:n
+    x <- x ^ 2
+    sum(x)
+}
+# Report the value of the sum when n=10
+compute_s_n(10)
+
+
+
+# Define a function and store it in `compute_s_n`
+compute_s_n <- function(n) {
+    x <- 1:n
+    sum(x ^ 2)
+}
+
+# Create a vector for storing results
+s_n <- vector("numeric", 25)
+
+# write a for-loop to store the results in s_n
+n <- 25
+for (i in 1:n) {
+    s_n[i] <- compute_s_n(i)
+}
+
+s_n
+
+
+
+# Define the function
+compute_s_n <- function(n) {
+    x <- 1:n
+    sum(x ^ 2)
+}
+
+# Define the vector of n
+n <- 1:25
+
+# Define the vector to store data
+s_n <- vector("numeric", 25)
+for (i in n) {
+    s_n[i] <- compute_s_n(i)
+}
+
+#  Create the plot 
+plot(n, s_n)
+
+
+# Define the function
+compute_s_n <- function(n) {
+    x <- 1:n
+    sum(x ^ 2)
+}
+
+# Define the vector of n
+n <- 1:25
+
+# Define the vector to store data
+s_n <- vector("numeric", 25)
+for (i in n) {
+    s_n[i] <- compute_s_n(i)
+}
+
+# Check that s_n is identical to the formula given in the instructions.
+my_n <- function(n) {
+    x <- n * (n + 1) * (2 * n + 1) / 6
+    x
+}
+for (i in n) {
+    s_n[n] == n(n + 1)(2 * n + 1) / 6
+
+}
+
+identical(s_n, n * (n + 1) * (2 * n + 1) / 6)
+
+
+my_n(25)
+
+identical(s_n[1],m(1))
+
